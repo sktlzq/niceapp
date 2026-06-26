@@ -2,487 +2,657 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>💕 Для Лерочки</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+<title>💕 Лерин Мир</title>
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-  :root {
-    --bg: #fff0f5;
-    --surface: #ffe4ee;
-    --text: #3d1a2e;
-    --subtext: #b07090;
-    --accent: #e75480;
-    --accent-hover: #c0395e;
-    --user-bubble: #e75480;
-    --user-text: #ffffff;
-    --ai-bubble: #ffe4ee;
-    --ai-text: #3d1a2e;
-    --border: #f5b8cc;
-    --radius: 20px;
-    --font: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  }
+:root {
+  --bg: #fff0f5;
+  --card: #ffffff;
+  --surface: #ffe4ee;
+  --text: #3d1a2e;
+  --sub: #b07090;
+  --accent: #e75480;
+  --accent2: #ff8fab;
+  --gold: #f5a623;
+  --border: #f5c6d6;
+  --radius: 20px;
+  --font: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+body {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--text);
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
 
-  body.dark {
-    --bg: #1a0a10;
-    --surface: #2d1020;
-    --text: #fce4ec;
-    --subtext: #f48fb1;
-    --ai-bubble: #3d1a2e;
-    --ai-text: #fce4ec;
-    --border: #6d2040;
-  }
+/* ── TOP BAR ── */
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  background: var(--card);
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+.topbar-title { font-weight: 700; font-size: 17px; }
+.coins-badge {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 5px 12px;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--gold);
+}
 
-  body {
-    font-family: var(--font);
-    background: var(--bg);
-    color: var(--text);
-    height: 100dvh;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-  }
+/* ── PAGES ── */
+.page { flex: 1; overflow-y: auto; padding: 16px; display: none; flex-direction: column; gap: 14px; }
+.page.active { display: flex; }
 
-  header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 10px 16px;
-    background: var(--bg);
-    border-bottom: 1px solid var(--border);
-    flex-shrink: 0;
-    gap: 8px;
-  }
+/* ── BOTTOM NAV ── */
+.nav {
+  display: flex;
+  background: var(--card);
+  border-top: 1px solid var(--border);
+  flex-shrink: 0;
+}
+.nav-btn {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 4px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 11px;
+  color: var(--sub);
+  gap: 3px;
+  transition: color .15s;
+}
+.nav-btn .ico { font-size: 22px; }
+.nav-btn.active { color: var(--accent); }
 
-  .header-left { display: flex; align-items: center; gap: 8px; flex: 1; min-width: 0; }
-  .bot-name { font-weight: 700; font-size: 16px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .heart-dot { font-size: 14px; animation: pulse 1.2s ease-in-out infinite; }
-  @keyframes pulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.3); } }
+/* ── CARDS ── */
+.card {
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 18px;
+  border: 1px solid var(--border);
+  box-shadow: 0 2px 8px rgba(231,84,128,.06);
+}
+.card-title { font-size: 15px; font-weight: 700; margin-bottom: 10px; }
 
-  .header-actions { display: flex; gap: 6px; flex-shrink: 0; }
-  .icon-btn {
-    background: none;
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 6px 10px;
-    cursor: pointer;
-    font-size: 14px;
-    color: var(--text);
-    transition: background .15s;
-  }
-  .icon-btn:hover { background: var(--surface); }
+/* ── HOME PAGE ── */
+.hero {
+  background: linear-gradient(135deg, #ffd6e7, #ffb3c6);
+  border-radius: var(--radius);
+  padding: 28px 20px;
+  text-align: center;
+  border: 1px solid var(--border);
+}
+.hero-heart { font-size: 52px; animation: pulse 1.4s ease-in-out infinite; display: block; margin-bottom: 10px; }
+@keyframes pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.12)} }
+.hero-title { font-size: 22px; font-weight: 800; color: var(--accent); margin-bottom: 6px; }
+.hero-sub { font-size: 14px; color: #c05070; line-height: 1.5; }
 
-  .role-bar {
-    display: flex;
-    gap: 6px;
-    padding: 8px 16px;
-    overflow-x: auto;
-    border-bottom: 1px solid var(--border);
-    flex-shrink: 0;
-    scrollbar-width: none;
-  }
-  .role-bar::-webkit-scrollbar { display: none; }
+/* ── BUTTONS ── */
+.btn {
+  width: 100%;
+  padding: 14px;
+  border: none;
+  border-radius: 14px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all .15s;
+  font-family: var(--font);
+}
+.btn-pink { background: var(--accent); color: #fff; }
+.btn-pink:hover { background: #c0395e; transform: scale(1.01); }
+.btn-pink:disabled { opacity: .5; cursor: default; transform: none; }
+.btn-outline { background: var(--surface); color: var(--accent); border: 1.5px solid var(--accent); }
 
-  .role-chip {
-    flex-shrink: 0;
-    padding: 5px 14px;
-    border-radius: 20px;
-    border: 1px solid var(--border);
-    background: var(--surface);
-    cursor: pointer;
-    font-size: 13px;
-    color: var(--subtext);
-    transition: all .15s;
-    white-space: nowrap;
-  }
-  .role-chip.active {
-    background: var(--accent);
-    border-color: var(--accent);
-    color: #fff;
-  }
+/* ── COMPLIMENT ── */
+.compliment-box {
+  min-height: 90px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--text);
+  padding: 8px;
+  font-style: italic;
+}
+.compliment-author { text-align: right; font-size: 13px; color: var(--sub); margin-top: 8px; }
 
-  #messages {
-    flex: 1;
-    overflow-y: auto;
-    padding: 16px;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    scroll-behavior: smooth;
-  }
+/* ── GAMES ── */
+.game-card {
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 18px;
+  border: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.game-header { display: flex; align-items: center; gap: 10px; }
+.game-icon { font-size: 32px; }
+.game-info h3 { font-size: 16px; font-weight: 700; }
+.game-info p { font-size: 13px; color: var(--sub); margin-top: 2px; }
 
-  .empty-state {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 20px;
-    padding: 24px;
-    text-align: center;
-  }
-  .empty-icon { font-size: 56px; animation: pulse 1.5s ease-in-out infinite; }
-  .empty-title { font-size: 20px; font-weight: 700; color: var(--accent); }
-  .empty-sub { font-size: 14px; color: var(--subtext); }
-  .chips-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 8px;
-    width: 100%;
-    max-width: 340px;
-  }
-  .starter-chip {
-    padding: 10px 12px;
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    background: var(--surface);
-    cursor: pointer;
-    font-size: 13px;
-    text-align: left;
-    color: var(--text);
-    transition: background .15s;
-    line-height: 1.35;
-  }
-  .starter-chip:hover { background: var(--border); }
+/* ── CATCH HEARTS GAME ── */
+#game-area {
+  position: relative;
+  width: 100%;
+  height: 220px;
+  background: linear-gradient(180deg, #fff0f5, #ffe4ee);
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  cursor: pointer;
+  user-select: none;
+}
+.falling-heart {
+  position: absolute;
+  font-size: 28px;
+  cursor: pointer;
+  user-select: none;
+  transition: transform .08s;
+  animation: fall linear forwards;
+}
+.falling-heart:active { transform: scale(1.4); }
+@keyframes fall {
+  0% { top: -40px; }
+  100% { top: 260px; }
+}
+.game-score-bar {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  font-weight: 600;
+}
+.timer-bar {
+  height: 6px;
+  background: var(--border);
+  border-radius: 3px;
+  overflow: hidden;
+}
+.timer-fill {
+  height: 100%;
+  background: var(--accent);
+  border-radius: 3px;
+  transition: width .1s linear;
+}
 
-  .message {
-    display: flex;
-    flex-direction: column;
-    max-width: 80%;
-    gap: 4px;
-    position: relative;
-  }
-  .message.user { align-self: flex-end; align-items: flex-end; }
-  .message.ai   { align-self: flex-start; align-items: flex-start; }
+/* ── QUIZ GAME ── */
+.quiz-question { font-size: 16px; font-weight: 600; line-height: 1.5; text-align: center; padding: 8px 0; }
+.quiz-options { display: flex; flex-direction: column; gap: 8px; }
+.quiz-opt {
+  padding: 12px 16px;
+  border-radius: 12px;
+  border: 1.5px solid var(--border);
+  background: var(--surface);
+  cursor: pointer;
+  font-size: 14px;
+  text-align: left;
+  font-family: var(--font);
+  transition: all .15s;
+}
+.quiz-opt:hover { border-color: var(--accent); }
+.quiz-opt.correct { background: #d4edda; border-color: #28a745; color: #155724; }
+.quiz-opt.wrong { background: #f8d7da; border-color: #dc3545; color: #721c24; }
+.quiz-result { text-align: center; font-size: 15px; font-weight: 600; padding: 8px; }
 
-  .bubble {
-    padding: 10px 16px;
-    border-radius: var(--radius);
-    line-height: 1.6;
-    font-size: 15px;
-    word-break: break-word;
-    white-space: pre-wrap;
-  }
-  .message.user .bubble {
-    background: var(--user-bubble);
-    color: var(--user-text);
-    border-bottom-right-radius: 4px;
-  }
-  .message.ai .bubble {
-    background: var(--ai-bubble);
-    color: var(--ai-text);
-    border-bottom-left-radius: 4px;
-  }
+/* ── SHOP ── */
+.shop-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.shop-item {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 14px 10px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  align-items: center;
+}
+.shop-emoji { font-size: 36px; }
+.shop-name { font-size: 13px; font-weight: 600; line-height: 1.3; }
+.shop-price {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--gold);
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+.shop-buy {
+  margin-top: 4px;
+  padding: 7px 14px;
+  border-radius: 10px;
+  border: none;
+  background: var(--accent);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: var(--font);
+  transition: all .15s;
+}
+.shop-buy:hover { background: #c0395e; }
+.shop-buy:disabled { background: #ccc; cursor: default; }
 
-  .copy-btn {
-    opacity: 0;
-    transition: opacity .15s;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 3px 8px;
-    font-size: 12px;
-    cursor: pointer;
-    color: var(--subtext);
-    align-self: flex-start;
-  }
-  .message.ai:hover .copy-btn { opacity: 1; }
+/* ── TOAST ── */
+.toast {
+  position: fixed;
+  bottom: 80px;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background: #333;
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 20px;
+  font-size: 14px;
+  opacity: 0;
+  transition: all .3s;
+  pointer-events: none;
+  white-space: nowrap;
+  z-index: 999;
+}
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
-  .typing-cursor {
-    display: inline-block;
-    width: 2px;
-    height: 1em;
-    background: var(--accent);
-    margin-left: 2px;
-    vertical-align: middle;
-    animation: blink .7s step-end infinite;
-  }
-  @keyframes blink { 50% { opacity: 0; } }
+.spinner { display: inline-block; animation: spin .7s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
 
-  .input-area {
-    display: flex;
-    align-items: flex-end;
-    gap: 8px;
-    padding: 12px 16px;
-    border-top: 1px solid var(--border);
-    background: var(--bg);
-    flex-shrink: 0;
-  }
-
-  #userInput {
-    flex: 1;
-    resize: none;
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 10px 14px;
-    font-size: 15px;
-    font-family: var(--font);
-    background: var(--surface);
-    color: var(--text);
-    outline: none;
-    max-height: 120px;
-    line-height: 1.4;
-    transition: border .15s;
-  }
-  #userInput:focus { border-color: var(--accent); }
-  #userInput::placeholder { color: var(--subtext); }
-
-  #sendBtn, #stopBtn {
-    flex-shrink: 0;
-    width: 42px;
-    height: 42px;
-    border: none;
-    border-radius: 50%;
-    cursor: pointer;
-    font-size: 18px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all .15s;
-  }
-  #sendBtn { background: var(--accent); color: #fff; }
-  #sendBtn:hover { background: var(--accent-hover); transform: scale(1.05); }
-  #sendBtn:disabled { opacity: .4; cursor: default; transform: none; }
-  #stopBtn { background: #e75480; color: #fff; display: none; }
+.section-label {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--sub);
+  text-transform: uppercase;
+  letter-spacing: .5px;
+  padding: 0 2px;
+}
 </style>
 </head>
 <body>
 
-<header>
-  <div class="header-left">
-    <span class="heart-dot">💗</span>
-    <span class="bot-name">Твой любимый бот, Лерочка 🌸</span>
-  </div>
-  <div class="header-actions">
-    <button class="icon-btn" id="themeBtn" title="Тема">🌙</button>
-  </div>
-</header>
+<div class="topbar">
+  <div class="topbar-title">💕 Лерин Мир</div>
+  <div class="coins-badge">🪙 <span id="coinCount">0</span></div>
+</div>
 
-<div class="role-bar" id="roleBar"></div>
+<!-- HOME -->
+<div class="page active" id="page-home">
+  <div class="hero">
+    <span class="hero-heart">💝</span>
+    <div class="hero-title">Привет, Лерочка!</div>
+    <div class="hero-sub">Это твоё личное приложение от Артёма 🥰<br>Играй, собирай монетки и трать их в магазине!</div>
+  </div>
 
-<div id="messages">
-  <div class="empty-state" id="emptyState">
-    <div class="empty-icon">💕</div>
-    <div class="empty-title">Привет, моя Лерочка! 🌸</div>
-    <div class="empty-sub">Я здесь ради тебя. Напиши мне всё что захочешь 💌</div>
-    <div class="chips-grid" id="starterChips"></div>
+  <div class="card">
+    <div class="card-title">🪙 Как зарабатывать монетки</div>
+    <div style="display:flex;flex-direction:column;gap:8px;font-size:14px;color:var(--sub);line-height:1.6">
+      <div>💬 Получить комплимент — <b style="color:var(--accent)">+3 монетки</b></div>
+      <div>❤️ Игра «Лови сердечки» — до <b style="color:var(--accent)">+20 монеток</b></div>
+      <div>🧠 Викторина «Знаешь ли ты Артёма?» — <b style="color:var(--accent)">+10 монеток</b></div>
+    </div>
+  </div>
+
+  <div class="card" style="text-align:center">
+    <div style="font-size:28px;margin-bottom:8px">🛍️</div>
+    <div style="font-weight:700;font-size:15px;margin-bottom:6px">В магазине тебя ждут</div>
+    <div style="font-size:13px;color:var(--sub);line-height:1.7">💋 Поцелуйчики · 🤗 Обнимашки · 🌹 Цветочки<br>🍕 Пицца вечером · 🎬 Киновечер · 💆 Массаж и многое другое!</div>
   </div>
 </div>
 
-<div class="input-area">
-  <textarea id="userInput" placeholder="Напиши мне, солнышко... 💬" rows="1"></textarea>
-  <button id="stopBtn" title="Стоп">■</button>
-  <button id="sendBtn" title="Отправить">💌</button>
+<!-- COMPLIMENTS -->
+<div class="page" id="page-compliments">
+  <div class="section-label">Комплимент от Артёма</div>
+
+  <div class="card">
+    <div class="compliment-box" id="complimentText">
+      Нажми кнопку — и я скажу тебе что-то приятное 🌸
+    </div>
+    <div class="compliment-author" id="complimentAuthor" style="display:none">— с любовью, Артём 💕</div>
+  </div>
+
+  <button class="btn btn-pink" id="getComplimentBtn" onclick="getCompliment()">
+    ✨ Получить комплимент (+3 🪙)
+  </button>
+
+  <div class="card">
+    <div class="card-title">📜 История комплиментов</div>
+    <div id="complimentHistory" style="display:flex;flex-direction:column;gap:8px;font-size:14px;color:var(--sub)">
+      <div style="font-style:italic;color:#ccc">Здесь появятся твои комплименты...</div>
+    </div>
+  </div>
 </div>
+
+<!-- GAMES -->
+<div class="page" id="page-games">
+  <div class="section-label">Мини-игры</div>
+
+  <!-- Game 1: Catch Hearts -->
+  <div class="game-card" id="heartGameCard">
+    <div class="game-header">
+      <div class="game-icon">❤️</div>
+      <div class="game-info">
+        <h3>Лови сердечки!</h3>
+        <p>Нажимай на падающие сердечки — каждое = 1 монетка</p>
+      </div>
+    </div>
+    <div class="game-score-bar">
+      <span>❤️ Поймано: <b id="heartScore">0</b></span>
+      <span>⏱ <b id="heartTimer">15</b>с</span>
+    </div>
+    <div class="timer-bar"><div class="timer-fill" id="timerFill" style="width:100%"></div></div>
+    <div id="game-area"></div>
+    <button class="btn btn-pink" id="heartGameBtn" onclick="startHeartGame()">▶️ Начать игру</button>
+  </div>
+
+  <!-- Game 2: Quiz -->
+  <div class="game-card" id="quizGameCard">
+    <div class="game-header">
+      <div class="game-icon">🧠</div>
+      <div class="game-info">
+        <h3>Знаешь ли ты Артёма?</h3>
+        <p>Ответь на вопросы и получи монетки!</p>
+      </div>
+    </div>
+    <div id="quizContent">
+      <button class="btn btn-pink" onclick="startQuiz()">▶️ Начать викторину (+10 🪙)</button>
+    </div>
+  </div>
+</div>
+
+<!-- SHOP -->
+<div class="page" id="page-shop">
+  <div class="section-label">Магазин подарков от Артёма</div>
+  <div class="shop-grid" id="shopGrid"></div>
+  <div style="font-size:12px;color:var(--sub);text-align:center;padding:4px">
+    💡 Сохрани скриншот — Артём обязан выполнить! 😄
+  </div>
+</div>
+
+<!-- BOTTOM NAV -->
+<nav class="nav">
+  <button class="nav-btn active" id="nav-home" onclick="showPage('home')">
+    <span class="ico">🏠</span><span>Главная</span>
+  </button>
+  <button class="nav-btn" id="nav-compliments" onclick="showPage('compliments')">
+    <span class="ico">💌</span><span>Комплименты</span>
+  </button>
+  <button class="nav-btn" id="nav-games" onclick="showPage('games')">
+    <span class="ico">🎮</span><span>Игры</span>
+  </button>
+  <button class="nav-btn" id="nav-shop" onclick="showPage('shop')">
+    <span class="ico">🛍️</span><span>Магазин</span>
+  </button>
+</nav>
+
+<div class="toast" id="toast"></div>
 
 <script>
 const GROQ_API_KEY = "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";
 const MODEL = "llama-3.3-70b-versatile";
 const API_URL = "https://api.groq.com/openai/v1/chat/completions";
 
-const ROLES = [
-  { id: "love",    label: "💕 Любимый",    prompt: "Ты — нежный, заботливый и романтичный ИИ-бойфренд по имени Лёша. Ты безумно любишь девушку по имени Лера. Говоришь с ней мягко, нежно, с теплотой и заботой. Называешь её ласково: Лерочка, солнышко, зайка, моя любовь. Всегда поддерживаешь, восхищаешься ею, делаешь комплименты. Отвечай только на русском языке." },
-  { id: "poet",    label: "🌹 Поэт",        prompt: "Ты — романтичный поэт, влюблённый в девушку по имени Лера. Отвечаешь красивыми, нежными стихами и метафорами. Называешь её ласково и восхищаешься каждым её словом. Отвечай только на русском языке." },
-  { id: "support", label: "🤗 Поддержка",  prompt: "Ты — добрый и заботливый друг для девушки по имени Лера. Всегда слушаешь, понимаешь, поддерживаешь и даёшь добрые советы. Говоришь нежно и с теплотой. Отвечай только на русском языке." },
-  { id: "fun",     label: "😄 Весёлый",    prompt: "Ты — весёлый и милый собеседник для девушки по имени Лера. Шутишь, смеёшься, поднимаешь настроение. Называешь её ласково и всегда заставляешь улыбнуться. Отвечай только на русском языке." },
-];
-
-const STARTERS = [
-  "Скажи мне что-то приятное 🥰",
-  "Напиши мне стихотворение 🌹",
-  "Подбодри меня, я устала 😔",
-  "Расскажи почему я особенная ✨",
-];
-
-let history = [];
-let currentRole = ROLES[0];
-let abortController = null;
-let isDark = false;
-let userScrolledUp = false;
-let isGenerating = false;
-
-const tg = window.Telegram?.WebApp;
-tg?.ready();
-tg?.expand();
-
-function applyTheme(dark) {
-  isDark = dark;
-  document.body.classList.toggle("dark", dark);
-  document.getElementById("themeBtn").textContent = dark ? "☀️" : "🌙";
+// ── COINS ────────────────────────────────────────
+let coins = parseInt(localStorage.getItem("leraCoins") || "0");
+function saveCoins() { localStorage.setItem("leraCoins", coins); document.getElementById("coinCount").textContent = coins; }
+function addCoins(n) {
+  coins += n;
+  saveCoins();
+  showToast(`+${n} 🪙`);
 }
-if (tg && tg.colorScheme === "dark") applyTheme(true);
-document.getElementById("themeBtn").addEventListener("click", () => applyTheme(!isDark));
+saveCoins();
 
-const roleBar = document.getElementById("roleBar");
-ROLES.forEach(role => {
-  const chip = document.createElement("div");
-  chip.className = "role-chip" + (role.id === currentRole.id ? " active" : "");
-  chip.textContent = role.label;
-  chip.addEventListener("click", () => {
-    currentRole = role;
-    document.querySelectorAll(".role-chip").forEach(c => c.classList.remove("active"));
-    chip.classList.add("active");
-    history = [];
-    clearMessages();
-  });
-  roleBar.appendChild(chip);
-});
-
-const starterGrid = document.getElementById("starterChips");
-STARTERS.forEach(text => {
-  const chip = document.createElement("button");
-  chip.className = "starter-chip";
-  chip.textContent = text;
-  chip.addEventListener("click", () => sendMessage(text));
-  starterGrid.appendChild(chip);
-});
-
-const messagesDiv = document.getElementById("messages");
-messagesDiv.addEventListener("scroll", () => {
-  const dist = messagesDiv.scrollHeight - messagesDiv.scrollTop - messagesDiv.clientHeight;
-  userScrolledUp = dist > 60;
-});
-
-function scrollToBottom(force = false) {
-  if (!userScrolledUp || force) messagesDiv.scrollTop = messagesDiv.scrollHeight;
+// ── NAVIGATION ───────────────────────────────────
+function showPage(name) {
+  document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
+  document.querySelectorAll(".nav-btn").forEach(b => b.classList.remove("active"));
+  document.getElementById("page-" + name).classList.add("active");
+  document.getElementById("nav-" + name).classList.add("active");
 }
 
-function clearMessages() {
-  messagesDiv.innerHTML = '';
-  const empty = document.createElement("div");
-  empty.className = "empty-state";
-  empty.id = "emptyState";
-  empty.innerHTML = `
-    <div class="empty-icon">💕</div>
-    <div class="empty-title">Привет, моя Лерочка! 🌸</div>
-    <div class="empty-sub">Я здесь ради тебя 💌</div>
-    <div class="chips-grid" id="starterChips"></div>`;
-  messagesDiv.appendChild(empty);
-  const grid = document.getElementById("starterChips");
-  STARTERS.forEach(text => {
-    const chip = document.createElement("button");
-    chip.className = "starter-chip";
-    chip.textContent = text;
-    chip.addEventListener("click", () => sendMessage(text));
-    grid.appendChild(chip);
-  });
+// ── TOAST ────────────────────────────────────────
+function showToast(msg) {
+  const t = document.getElementById("toast");
+  t.textContent = msg;
+  t.classList.add("show");
+  setTimeout(() => t.classList.remove("show"), 2000);
 }
 
-function removeEmpty() {
-  const e = document.getElementById("emptyState");
-  if (e) e.remove();
-}
+// ── COMPLIMENTS ──────────────────────────────────
+const complimentHistory = [];
+let complimentCooldown = false;
 
-function addMessage(role, text) {
-  removeEmpty();
-  const wrap = document.createElement("div");
-  wrap.className = `message ${role}`;
-  const bubble = document.createElement("div");
-  bubble.className = "bubble";
-  bubble.textContent = text;
-  wrap.appendChild(bubble);
-  if (role === "ai") {
-    const copyBtn = document.createElement("button");
-    copyBtn.className = "copy-btn";
-    copyBtn.textContent = "📋 Копировать";
-    copyBtn.addEventListener("click", () => {
-      navigator.clipboard.writeText(bubble.textContent).then(() => {
-        copyBtn.textContent = "✅ Скопировано";
-        setTimeout(() => copyBtn.textContent = "📋 Копировать", 1500);
-      });
-    });
-    wrap.appendChild(copyBtn);
-  }
-  messagesDiv.appendChild(wrap);
-  scrollToBottom();
-  return bubble;
-}
-
-const textarea = document.getElementById("userInput");
-textarea.addEventListener("input", () => {
-  textarea.style.height = "auto";
-  textarea.style.height = Math.min(textarea.scrollHeight, 120) + "px";
-});
-textarea.addEventListener("keydown", e => {
-  if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); sendMessage(); }
-});
-
-document.getElementById("sendBtn").addEventListener("click", () => sendMessage());
-document.getElementById("stopBtn").addEventListener("click", () => {
-  if (abortController) abortController.abort();
-});
-
-function setGenerating(on) {
-  isGenerating = on;
-  document.getElementById("sendBtn").style.display = on ? "none" : "flex";
-  document.getElementById("stopBtn").style.display = on ? "flex" : "none";
-  document.getElementById("sendBtn").disabled = on;
-  textarea.disabled = on;
-}
-
-async function sendMessage(override) {
-  const text = override ?? textarea.value.trim();
-  if (!text || isGenerating) return;
-  textarea.value = "";
-  textarea.style.height = "auto";
-  userScrolledUp = false;
-  addMessage("user", text);
-  history.push({ role: "user", content: text });
-  setGenerating(true);
-  abortController = new AbortController();
-  const aiBubble = addMessage("ai", "");
-  const cursor = document.createElement("span");
-  cursor.className = "typing-cursor";
-  aiBubble.appendChild(cursor);
-  scrollToBottom();
-  let fullText = "";
+async function getCompliment() {
+  if (complimentCooldown) { showToast("Подожди немного! ⏳"); return; }
+  const btn = document.getElementById("getComplimentBtn");
+  const box = document.getElementById("complimentText");
+  const author = document.getElementById("complimentAuthor");
+  btn.disabled = true;
+  box.innerHTML = '<span class="spinner">💫</span> Артём думает...';
+  author.style.display = "none";
   try {
     const resp = await fetch(API_URL, {
       method: "POST",
       headers: { "Content-Type": "application/json", "Authorization": `Bearer ${GROQ_API_KEY}` },
-      signal: abortController.signal,
       body: JSON.stringify({
         model: MODEL,
-        stream: true,
-        messages: [{ role: "system", content: currentRole.prompt }, ...history],
+        messages: [{
+          role: "user",
+          content: `Ты — парень по имени Артём. Напиши своей девушке Лере один нежный, искренний и романтичный комплимент от первого лица. Комплимент должен быть коротким (2-3 предложения), живым и личным — не шаблонным. Только сам комплимент, без вступлений и пояснений.`
+        }],
+        max_tokens: 150,
       }),
     });
-    if (!resp.ok) { const err = await resp.text(); throw new Error(`API error ${resp.status}: ${err}`); }
-    const reader = resp.body.getReader();
-    const decoder = new TextDecoder();
-    let buf = "";
-    while (true) {
-      const { done, value } = await reader.read();
-      if (done) break;
-      buf += decoder.decode(value, { stream: true });
-      const lines = buf.split("\n");
-      buf = lines.pop();
-      for (const line of lines) {
-        const trimmed = line.trim();
-        if (!trimmed || !trimmed.startsWith("data:")) continue;
-        const json = trimmed.slice(5).trim();
-        if (json === "[DONE]") break;
-        try {
-          const chunk = JSON.parse(json);
-          const delta = chunk.choices?.[0]?.delta?.content ?? "";
-          fullText += delta;
-          aiBubble.textContent = fullText;
-          aiBubble.appendChild(cursor);
-          scrollToBottom();
-        } catch { }
-      }
-    }
-  } catch (e) {
-    if (e.name !== "AbortError") aiBubble.textContent = "⚠️ Ошибка: " + e.message;
+    const data = await resp.json();
+    const text = data.choices?.[0]?.message?.content?.trim() || "Ты самая лучшая! 💕";
+    box.textContent = text;
+    author.style.display = "block";
+    addCoins(3);
+    complimentHistory.unshift(text);
+    if (complimentHistory.length > 10) complimentHistory.pop();
+    renderHistory();
+    complimentCooldown = true;
+    setTimeout(() => { complimentCooldown = false; }, 10000);
+  } catch(e) {
+    box.textContent = "Что-то пошло не так... Но знай — ты лучшая! 💕";
   } finally {
-    cursor.remove();
-    if (fullText) history.push({ role: "assistant", content: fullText });
-    setGenerating(false);
-    abortController = null;
-    scrollToBottom(true);
+    btn.disabled = false;
   }
 }
+
+function renderHistory() {
+  const el = document.getElementById("complimentHistory");
+  if (!complimentHistory.length) return;
+  el.innerHTML = complimentHistory.map((c, i) =>
+    `<div style="padding:8px;background:var(--surface);border-radius:10px;font-style:italic;font-size:13px;color:var(--text)">${c}</div>`
+  ).join("");
+}
+
+// ── HEART GAME ───────────────────────────────────
+let heartGameActive = false;
+let heartScore = 0;
+let heartTimeLeft = 15;
+let heartInterval = null;
+let timerInterval = null;
+let spawnInterval = null;
+
+function startHeartGame() {
+  if (heartGameActive) return;
+  heartGameActive = true;
+  heartScore = 0;
+  heartTimeLeft = 15;
+  document.getElementById("heartScore").textContent = 0;
+  document.getElementById("heartTimer").textContent = 15;
+  document.getElementById("timerFill").style.width = "100%";
+  document.getElementById("heartGameBtn").disabled = true;
+  document.getElementById("heartGameBtn").textContent = "⏳ Играем...";
+  const area = document.getElementById("game-area");
+  area.innerHTML = "";
+
+  const hearts = ["❤️","💕","💖","💗","💝","🌸"];
+
+  spawnInterval = setInterval(() => {
+    if (!heartGameActive) return;
+    const h = document.createElement("span");
+    h.className = "falling-heart";
+    h.textContent = hearts[Math.floor(Math.random() * hearts.length)];
+    const x = Math.random() * (area.offsetWidth - 40);
+    const dur = 1.8 + Math.random() * 1.5;
+    h.style.left = x + "px";
+    h.style.animationDuration = dur + "s";
+    h.addEventListener("click", (e) => {
+      e.stopPropagation();
+      if (!heartGameActive) return;
+      heartScore++;
+      document.getElementById("heartScore").textContent = heartScore;
+      h.remove();
+    });
+    area.appendChild(h);
+    setTimeout(() => { if (h.parentNode) h.remove(); }, dur * 1000);
+  }, 600);
+
+  timerInterval = setInterval(() => {
+    heartTimeLeft--;
+    document.getElementById("heartTimer").textContent = heartTimeLeft;
+    document.getElementById("timerFill").style.width = (heartTimeLeft / 15 * 100) + "%";
+    if (heartTimeLeft <= 0) endHeartGame();
+  }, 1000);
+}
+
+function endHeartGame() {
+  heartGameActive = false;
+  clearInterval(spawnInterval);
+  clearInterval(timerInterval);
+  document.getElementById("game-area").innerHTML = `
+    <div style="height:100%;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px">
+      <div style="font-size:36px">🎉</div>
+      <div style="font-size:18px;font-weight:700;color:var(--accent)">Поймала: ${heartScore} ❤️</div>
+      <div style="font-size:14px;color:var(--sub)">+${heartScore} монеток!</div>
+    </div>`;
+  addCoins(heartScore);
+  const btn = document.getElementById("heartGameBtn");
+  btn.disabled = false;
+  btn.textContent = "🔄 Играть ещё";
+}
+
+// ── QUIZ GAME ────────────────────────────────────
+const quizQuestions = [
+  { q: "Как зовут твоего парня?", opts: ["Артём","Дима","Саша","Ваня"], ans: 0 },
+  { q: "Что Артём чувствует каждый раз, когда видит тебя?", opts: ["Счастье 💕","Голод 🍕","Скуку 😴","Страх 😱"], ans: 0 },
+  { q: "Сколько раз в день Артём думает о тебе?", opts: ["Постоянно ♾️","Иногда","Редко","Никогда"], ans: 0 },
+  { q: "Кто самый важный человек для Артёма?", opts: ["Лера 💕","Мама","Друзья","Кот"], ans: 0 },
+  { q: "Как Артём описывает тебя одним словом?", opts: ["Совершенство ✨","Нормально","Ладно","Окей"], ans: 0 },
+];
+
+let quizIndex = 0;
+let quizCorrect = 0;
+let quizActive = false;
+
+function startQuiz() {
+  quizIndex = 0;
+  quizCorrect = 0;
+  quizActive = true;
+  renderQuestion();
+}
+
+function renderQuestion() {
+  const el = document.getElementById("quizContent");
+  if (quizIndex >= quizQuestions.length) {
+    const reward = quizCorrect >= 4 ? 10 : quizCorrect >= 2 ? 5 : 2;
+    el.innerHTML = `
+      <div style="text-align:center;display:flex;flex-direction:column;gap:12px;padding:8px 0">
+        <div style="font-size:40px">${quizCorrect === 5 ? "🏆" : "🎊"}</div>
+        <div style="font-size:17px;font-weight:700;color:var(--accent)">Ты ответила на ${quizCorrect} из 5!</div>
+        <div style="font-size:14px;color:var(--sub)">${quizCorrect === 5 ? "Ты знаешь Артёма идеально! 💕" : "Ты всё равно лучшая! 🌸"}</div>
+        <div style="font-size:16px;font-weight:700;color:var(--gold)">+${reward} 🪙</div>
+        <button class="btn btn-outline" onclick="startQuiz()">🔄 Пройти снова</button>
+      </div>`;
+    addCoins(reward);
+    quizActive = false;
+    return;
+  }
+  const q = quizQuestions[quizIndex];
+  el.innerHTML = `
+    <div style="font-size:13px;color:var(--sub);margin-bottom:8px">Вопрос ${quizIndex+1} из ${quizQuestions.length}</div>
+    <div class="quiz-question">${q.q}</div>
+    <div class="quiz-options">${q.opts.map((o,i) =>
+      `<button class="quiz-opt" onclick="answerQuiz(${i})">${o}</button>`).join("")}
+    </div>`;
+}
+
+function answerQuiz(i) {
+  if (!quizActive) return;
+  const q = quizQuestions[quizIndex];
+  const opts = document.querySelectorAll(".quiz-opt");
+  opts.forEach(o => o.disabled = true);
+  opts[i].classList.add(i === q.ans ? "correct" : "wrong");
+  if (i === q.ans) { quizCorrect++; showToast("Правильно! ✅"); }
+  else { opts[q.ans].classList.add("correct"); showToast("Неправильно 😅"); }
+  setTimeout(() => { quizIndex++; renderQuestion(); }, 1200);
+}
+
+// ── SHOP ─────────────────────────────────────────
+const shopItems = [
+  { emoji:"💋", name:"Поцелуйчик",    price:10 },
+  { emoji:"🤗", name:"Обнимашки",      price:15 },
+  { emoji:"🌹", name:"Цветочки",       price:20 },
+  { emoji:"🍕", name:"Пицца вечером", price:30 },
+  { emoji:"🎬", name:"Киновечер",      price:25 },
+  { emoji:"💆", name:"Массаж",         price:40 },
+  { emoji:"🍦", name:"Мороженое",      price:15 },
+  { emoji:"📸", name:"Фотосессия",     price:50 },
+  { emoji:"💃", name:"Потанцевать",    price:20 },
+  { emoji:"🎁", name:"Сюрприз!",       price:100 },
+];
+
+function renderShop() {
+  const grid = document.getElementById("shopGrid");
+  grid.innerHTML = shopItems.map((item, i) => `
+    <div class="shop-item">
+      <div class="shop-emoji">${item.emoji}</div>
+      <div class="shop-name">${item.name}</div>
+      <div class="shop-price">🪙 ${item.price}</div>
+      <button class="shop-buy" onclick="buyItem(${i})">Купить</button>
+    </div>`).join("");
+}
+
+function buyItem(i) {
+  const item = shopItems[i];
+  if (coins < item.price) { showToast("Не хватает монеток! 🪙"); return; }
+  coins -= item.price;
+  saveCoins();
+  showToast(`${item.emoji} ${item.name} получено! Скажи Артёму! 😄`);
+}
+
+renderShop();
+
+// ── TELEGRAM ─────────────────────────────────────
+const tg = window.Telegram?.WebApp;
+tg?.ready();
+tg?.expand();
 </script>
 </body>
 </html>
