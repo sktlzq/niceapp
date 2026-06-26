@@ -3,37 +3,35 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>ИИ-чат</title>
+<title>💕 Для Лерочки</title>
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 <style>
-  /* ─── Reset & Variables ─── */
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   :root {
-    --bg: #ffffff;
-    --surface: #f4f4f5;
-    --text: #18181b;
-    --subtext: #71717a;
-    --accent: #6366f1;
-    --accent-hover: #4f46e5;
-    --user-bubble: #6366f1;
+    --bg: #fff0f5;
+    --surface: #ffe4ee;
+    --text: #3d1a2e;
+    --subtext: #b07090;
+    --accent: #e75480;
+    --accent-hover: #c0395e;
+    --user-bubble: #e75480;
     --user-text: #ffffff;
-    --ai-bubble: #f4f4f5;
-    --ai-text: #18181b;
-    --border: #e4e4e7;
-    --shadow: 0 2px 8px rgba(0,0,0,.08);
-    --radius: 18px;
+    --ai-bubble: #ffe4ee;
+    --ai-text: #3d1a2e;
+    --border: #f5b8cc;
+    --radius: 20px;
     --font: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   }
 
   body.dark {
-    --bg: #09090b;
-    --surface: #18181b;
-    --text: #fafafa;
-    --subtext: #a1a1aa;
-    --ai-bubble: #27272a;
-    --ai-text: #fafafa;
-    --border: #3f3f46;
+    --bg: #1a0a10;
+    --surface: #2d1020;
+    --text: #fce4ec;
+    --subtext: #f48fb1;
+    --ai-bubble: #3d1a2e;
+    --ai-text: #fce4ec;
+    --border: #6d2040;
   }
 
   body {
@@ -43,11 +41,9 @@
     height: 100dvh;
     display: flex;
     flex-direction: column;
-    transition: background .25s, color .25s;
     overflow: hidden;
   }
 
-  /* ─── Header ─── */
   header {
     display: flex;
     align-items: center;
@@ -61,10 +57,10 @@
 
   .header-left { display: flex; align-items: center; gap: 8px; flex: 1; min-width: 0; }
   .bot-name { font-weight: 700; font-size: 16px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .status-dot { width: 8px; height: 8px; border-radius: 50%; background: #22c55e; flex-shrink: 0; }
+  .heart-dot { font-size: 14px; animation: pulse 1.2s ease-in-out infinite; }
+  @keyframes pulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.3); } }
 
   .header-actions { display: flex; gap: 6px; flex-shrink: 0; }
-
   .icon-btn {
     background: none;
     border: 1px solid var(--border);
@@ -77,7 +73,6 @@
   }
   .icon-btn:hover { background: var(--surface); }
 
-  /* ─── Role chips ─── */
   .role-bar {
     display: flex;
     gap: 6px;
@@ -91,7 +86,7 @@
 
   .role-chip {
     flex-shrink: 0;
-    padding: 5px 12px;
+    padding: 5px 14px;
     border-radius: 20px;
     border: 1px solid var(--border);
     background: var(--surface);
@@ -107,7 +102,6 @@
     color: #fff;
   }
 
-  /* ─── Messages area ─── */
   #messages {
     flex: 1;
     overflow-y: auto;
@@ -118,7 +112,6 @@
     scroll-behavior: smooth;
   }
 
-  /* ─── Empty state ─── */
   .empty-state {
     flex: 1;
     display: flex;
@@ -129,8 +122,8 @@
     padding: 24px;
     text-align: center;
   }
-  .empty-icon { font-size: 48px; }
-  .empty-title { font-size: 18px; font-weight: 600; }
+  .empty-icon { font-size: 56px; animation: pulse 1.5s ease-in-out infinite; }
+  .empty-title { font-size: 20px; font-weight: 700; color: var(--accent); }
   .empty-sub { font-size: 14px; color: var(--subtext); }
   .chips-grid {
     display: grid;
@@ -153,11 +146,10 @@
   }
   .starter-chip:hover { background: var(--border); }
 
-  /* ─── Bubbles ─── */
   .message {
     display: flex;
     flex-direction: column;
-    max-width: 78%;
+    max-width: 80%;
     gap: 4px;
     position: relative;
   }
@@ -165,9 +157,9 @@
   .message.ai   { align-self: flex-start; align-items: flex-start; }
 
   .bubble {
-    padding: 10px 14px;
+    padding: 10px 16px;
     border-radius: var(--radius);
-    line-height: 1.55;
+    line-height: 1.6;
     font-size: 15px;
     word-break: break-word;
     white-space: pre-wrap;
@@ -208,7 +200,6 @@
   }
   @keyframes blink { 50% { opacity: 0; } }
 
-  /* ─── Input area ─── */
   .input-area {
     display: flex;
     align-items: flex-end;
@@ -223,7 +214,7 @@
     flex: 1;
     resize: none;
     border: 1px solid var(--border);
-    border-radius: 14px;
+    border-radius: 16px;
     padding: 10px 14px;
     font-size: 15px;
     font-family: var(--font);
@@ -239,40 +230,31 @@
 
   #sendBtn, #stopBtn {
     flex-shrink: 0;
-    width: 40px;
-    height: 40px;
+    width: 42px;
+    height: 42px;
     border: none;
-    border-radius: 12px;
+    border-radius: 50%;
     cursor: pointer;
-    font-size: 17px;
+    font-size: 18px;
     display: flex;
     align-items: center;
     justify-content: center;
     transition: all .15s;
   }
-  #sendBtn {
-    background: var(--accent);
-    color: #fff;
-  }
-  #sendBtn:hover { background: var(--accent-hover); }
-  #sendBtn:disabled { opacity: .4; cursor: default; }
-  #stopBtn {
-    background: #ef4444;
-    color: #fff;
-    display: none;
-  }
-  #stopBtn:hover { background: #dc2626; }
+  #sendBtn { background: var(--accent); color: #fff; }
+  #sendBtn:hover { background: var(--accent-hover); transform: scale(1.05); }
+  #sendBtn:disabled { opacity: .4; cursor: default; transform: none; }
+  #stopBtn { background: #e75480; color: #fff; display: none; }
 </style>
 </head>
 <body>
 
 <header>
   <div class="header-left">
-    <span class="status-dot"></span>
-    <span class="bot-name">ИИ-Ассистент</span>
+    <span class="heart-dot">💗</span>
+    <span class="bot-name">Твой любимый бот, Лерочка 🌸</span>
   </div>
   <div class="header-actions">
-    <button class="icon-btn" id="exportBtn" title="Экспорт чата">💾</button>
     <button class="icon-btn" id="themeBtn" title="Тема">🌙</button>
   </div>
 </header>
@@ -281,66 +263,57 @@
 
 <div id="messages">
   <div class="empty-state" id="emptyState">
-    <div class="empty-icon">🤖</div>
-    <div class="empty-title">Привет! Чем могу помочь?</div>
-    <div class="empty-sub">Выберите подсказку или напишите вопрос</div>
+    <div class="empty-icon">💕</div>
+    <div class="empty-title">Привет, моя Лерочка! 🌸</div>
+    <div class="empty-sub">Я здесь ради тебя. Напиши мне всё что захочешь 💌</div>
     <div class="chips-grid" id="starterChips"></div>
   </div>
 </div>
 
 <div class="input-area">
-  <textarea id="userInput" placeholder="Напишите сообщение..." rows="1"></textarea>
-  <button id="stopBtn" title="Остановить">■</button>
-  <button id="sendBtn" title="Отправить">➤</button>
+  <textarea id="userInput" placeholder="Напиши мне, солнышко... 💬" rows="1"></textarea>
+  <button id="stopBtn" title="Стоп">■</button>
+  <button id="sendBtn" title="Отправить">💌</button>
 </div>
 
 <script>
-// ─── CONFIG ───────────────────────────────────────────────────────
 const GROQ_API_KEY = "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";
 const MODEL = "llama-3.3-70b-versatile";
 const API_URL = "https://api.groq.com/openai/v1/chat/completions";
 
-// ─── ROLES ────────────────────────────────────────────────────────
 const ROLES = [
-  { id: "assistant", label: "🤖 Ассистент",   prompt: "You are a helpful AI assistant. Respond in the same language as the user." },
-  { id: "coder",     label: "👨‍💻 Программист", prompt: "You are an expert software developer. Help the user with code, debugging, and architecture. Respond in the same language as the user." },
-  { id: "translator",label: "🌐 Переводчик",  prompt: "You are a professional translator. Translate the user's text accurately, preserving tone and meaning. Ask for target language if not specified." },
-  { id: "writer",    label: "✍️ Писатель",    prompt: "You are a creative writer. Help the user with creative writing, storytelling, and editing. Respond in the same language as the user." },
-  { id: "coach",     label: "💪 Коуч",        prompt: "You are a motivational life coach. Help the user set goals, overcome challenges, and grow. Respond in the same language as the user." },
+  { id: "love",    label: "💕 Любимый",    prompt: "Ты — нежный, заботливый и романтичный ИИ-бойфренд по имени Лёша. Ты безумно любишь девушку по имени Лера. Говоришь с ней мягко, нежно, с теплотой и заботой. Называешь её ласково: Лерочка, солнышко, зайка, моя любовь. Всегда поддерживаешь, восхищаешься ею, делаешь комплименты. Отвечай только на русском языке." },
+  { id: "poet",    label: "🌹 Поэт",        prompt: "Ты — романтичный поэт, влюблённый в девушку по имени Лера. Отвечаешь красивыми, нежными стихами и метафорами. Называешь её ласково и восхищаешься каждым её словом. Отвечай только на русском языке." },
+  { id: "support", label: "🤗 Поддержка",  prompt: "Ты — добрый и заботливый друг для девушки по имени Лера. Всегда слушаешь, понимаешь, поддерживаешь и даёшь добрые советы. Говоришь нежно и с теплотой. Отвечай только на русском языке." },
+  { id: "fun",     label: "😄 Весёлый",    prompt: "Ты — весёлый и милый собеседник для девушки по имени Лера. Шутишь, смеёшься, поднимаешь настроение. Называешь её ласково и всегда заставляешь улыбнуться. Отвечай только на русском языке." },
 ];
 
 const STARTERS = [
-  "Объясни квантовые вычисления простыми словами",
-  "Напиши функцию на Python для парсинга JSON",
-  "Переведи на английский: 'Привет, как дела?'",
-  "Помоги составить план на неделю",
+  "Скажи мне что-то приятное 🥰",
+  "Напиши мне стихотворение 🌹",
+  "Подбодри меня, я устала 😔",
+  "Расскажи почему я особенная ✨",
 ];
 
-// ─── STATE ────────────────────────────────────────────────────────
-let history = [];           // [{role, content}]
+let history = [];
 let currentRole = ROLES[0];
 let abortController = null;
 let isDark = false;
 let userScrolledUp = false;
 let isGenerating = false;
 
-// ─── TELEGRAM ─────────────────────────────────────────────────────
 const tg = window.Telegram?.WebApp;
 tg?.ready();
 tg?.expand();
 
-// ─── THEME INIT ───────────────────────────────────────────────────
 function applyTheme(dark) {
   isDark = dark;
   document.body.classList.toggle("dark", dark);
   document.getElementById("themeBtn").textContent = dark ? "☀️" : "🌙";
 }
-// Try to match Telegram theme
 if (tg && tg.colorScheme === "dark") applyTheme(true);
-
 document.getElementById("themeBtn").addEventListener("click", () => applyTheme(!isDark));
 
-// ─── ROLES UI ─────────────────────────────────────────────────────
 const roleBar = document.getElementById("roleBar");
 ROLES.forEach(role => {
   const chip = document.createElement("div");
@@ -356,7 +329,6 @@ ROLES.forEach(role => {
   roleBar.appendChild(chip);
 });
 
-// ─── STARTER CHIPS ────────────────────────────────────────────────
 const starterGrid = document.getElementById("starterChips");
 STARTERS.forEach(text => {
   const chip = document.createElement("button");
@@ -366,29 +338,25 @@ STARTERS.forEach(text => {
   starterGrid.appendChild(chip);
 });
 
-// ─── SCROLL ───────────────────────────────────────────────────────
 const messagesDiv = document.getElementById("messages");
 messagesDiv.addEventListener("scroll", () => {
-  const distFromBottom = messagesDiv.scrollHeight - messagesDiv.scrollTop - messagesDiv.clientHeight;
-  userScrolledUp = distFromBottom > 60;
+  const dist = messagesDiv.scrollHeight - messagesDiv.scrollTop - messagesDiv.clientHeight;
+  userScrolledUp = dist > 60;
 });
 
 function scrollToBottom(force = false) {
-  if (!userScrolledUp || force) {
-    messagesDiv.scrollTop = messagesDiv.scrollHeight;
-  }
+  if (!userScrolledUp || force) messagesDiv.scrollTop = messagesDiv.scrollHeight;
 }
 
-// ─── UTILS ────────────────────────────────────────────────────────
 function clearMessages() {
   messagesDiv.innerHTML = '';
   const empty = document.createElement("div");
   empty.className = "empty-state";
   empty.id = "emptyState";
   empty.innerHTML = `
-    <div class="empty-icon">🤖</div>
-    <div class="empty-title">Привет! Чем могу помочь?</div>
-    <div class="empty-sub">Выберите подсказку или напишите вопрос</div>
+    <div class="empty-icon">💕</div>
+    <div class="empty-title">Привет, моя Лерочка! 🌸</div>
+    <div class="empty-sub">Я здесь ради тебя 💌</div>
     <div class="chips-grid" id="starterChips"></div>`;
   messagesDiv.appendChild(empty);
   const grid = document.getElementById("starterChips");
@@ -410,12 +378,10 @@ function addMessage(role, text) {
   removeEmpty();
   const wrap = document.createElement("div");
   wrap.className = `message ${role}`;
-
   const bubble = document.createElement("div");
   bubble.className = "bubble";
   bubble.textContent = text;
   wrap.appendChild(bubble);
-
   if (role === "ai") {
     const copyBtn = document.createElement("button");
     copyBtn.className = "copy-btn";
@@ -428,26 +394,20 @@ function addMessage(role, text) {
     });
     wrap.appendChild(copyBtn);
   }
-
   messagesDiv.appendChild(wrap);
   scrollToBottom();
   return bubble;
 }
 
-// ─── AUTO-RESIZE TEXTAREA ─────────────────────────────────────────
 const textarea = document.getElementById("userInput");
 textarea.addEventListener("input", () => {
   textarea.style.height = "auto";
   textarea.style.height = Math.min(textarea.scrollHeight, 120) + "px";
 });
 textarea.addEventListener("keydown", e => {
-  if (e.key === "Enter" && !e.shiftKey) {
-    e.preventDefault();
-    sendMessage();
-  }
+  if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); sendMessage(); }
 });
 
-// ─── SEND / STOP ──────────────────────────────────────────────────
 document.getElementById("sendBtn").addEventListener("click", () => sendMessage());
 document.getElementById("stopBtn").addEventListener("click", () => {
   if (abortController) abortController.abort();
@@ -464,52 +424,34 @@ function setGenerating(on) {
 async function sendMessage(override) {
   const text = override ?? textarea.value.trim();
   if (!text || isGenerating) return;
-
   textarea.value = "";
   textarea.style.height = "auto";
   userScrolledUp = false;
-
   addMessage("user", text);
   history.push({ role: "user", content: text });
-
   setGenerating(true);
   abortController = new AbortController();
-
   const aiBubble = addMessage("ai", "");
   const cursor = document.createElement("span");
   cursor.className = "typing-cursor";
   aiBubble.appendChild(cursor);
   scrollToBottom();
-
   let fullText = "";
-
   try {
     const resp = await fetch(API_URL, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${GROQ_API_KEY}`,
-      },
+      headers: { "Content-Type": "application/json", "Authorization": `Bearer ${GROQ_API_KEY}` },
       signal: abortController.signal,
       body: JSON.stringify({
         model: MODEL,
         stream: true,
-        messages: [
-          { role: "system", content: currentRole.prompt },
-          ...history,
-        ],
+        messages: [{ role: "system", content: currentRole.prompt }, ...history],
       }),
     });
-
-    if (!resp.ok) {
-      const err = await resp.text();
-      throw new Error(`API error ${resp.status}: ${err}`);
-    }
-
+    if (!resp.ok) { const err = await resp.text(); throw new Error(`API error ${resp.status}: ${err}`); }
     const reader = resp.body.getReader();
     const decoder = new TextDecoder();
     let buf = "";
-
     while (true) {
       const { done, value } = await reader.read();
       if (done) break;
@@ -528,38 +470,19 @@ async function sendMessage(override) {
           aiBubble.textContent = fullText;
           aiBubble.appendChild(cursor);
           scrollToBottom();
-        } catch { /* skip */ }
+        } catch { }
       }
     }
   } catch (e) {
-    if (e.name !== "AbortError") {
-      aiBubble.textContent = "⚠️ Ошибка: " + e.message;
-    } else {
-      // stopped by user — keep partial text
-    }
+    if (e.name !== "AbortError") aiBubble.textContent = "⚠️ Ошибка: " + e.message;
   } finally {
     cursor.remove();
-    if (fullText) {
-      history.push({ role: "assistant", content: fullText });
-    }
+    if (fullText) history.push({ role: "assistant", content: fullText });
     setGenerating(false);
     abortController = null;
     scrollToBottom(true);
   }
 }
-
-// ─── EXPORT ───────────────────────────────────────────────────────
-document.getElementById("exportBtn").addEventListener("click", () => {
-  if (!history.length) { alert("Чат пуст!"); return; }
-  const lines = history.map(m => `[${m.role === "user" ? "Вы" : "ИИ"}]\n${m.content}`).join("\n\n---\n\n");
-  const blob = new Blob([lines], { type: "text/plain;charset=utf-8" });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = `chat_${new Date().toISOString().slice(0,10)}.txt`;
-  a.click();
-  URL.revokeObjectURL(url);
-});
 </script>
 </body>
 </html>
